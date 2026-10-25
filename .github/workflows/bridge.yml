@@ -34,15 +34,15 @@ jobs:
         if: ${{ inputs.version != 'master' }}
         uses: actions/checkout@v4
         with:
-          repository: rustdesk/rustdesk
-          ref: refs/tags/${{ inputs.version }}
+          repository: karirhamid/rustdesk
+          ref: refs/heads/rtdesk-${{ inputs.version }}
           submodules: recursive
         
       - name: Checkout source code
         if: ${{ inputs.version == 'master' }}
         uses: actions/checkout@v4
         with:
-          repository: rustdesk/rustdesk
+          repository: karirhamid/rustdesk
           submodules: recursive
 
       - name: Install prerequisites
