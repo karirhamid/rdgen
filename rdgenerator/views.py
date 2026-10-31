@@ -420,7 +420,9 @@ def generator_view(request):
         form = GenerateForm(request.POST, request.FILES)
         if form.is_valid():
             params = form.cleaned_data
-            full_url = f"{_settings.PROTOCOL}://{request.get_host()}" if _settings.GENURL else f"{_settings.PROTOCOL}://{request.get_host()}"
+            # RTDESK: the build machines call back on GENURL (public, port 443); the host this request
+            # came in on (the LAN-only :8443) is not reachable from them.
+            full_url = _settings.GENURL.rstrip("/") if _settings.GENURL else f"{_settings.PROTOCOL}://{request.get_host()}"
             result = generate_custom_client(params, full_url)
             if result['success']:
                 return render(request, 'waiting.html', {

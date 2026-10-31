@@ -242,7 +242,9 @@ def api_generate(request):
         }, status=400)
 
     # Build full_url the same way as generator_view
-    full_url = f"{_settings.PROTOCOL}://{request.get_host()}" if _settings.GENURL else f"{_settings.PROTOCOL}://{request.get_host()}"
+    # RTDESK: the build machines call back on GENURL (public, port 443); the host this request
+    # came in on (the LAN-only :8443) is not reachable from them.
+    full_url = _settings.GENURL.rstrip("/") if _settings.GENURL else f"{_settings.PROTOCOL}://{request.get_host()}"
 
     result = generate_custom_client(cleaned, full_url)
 
